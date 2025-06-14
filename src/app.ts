@@ -75,6 +75,22 @@ app.get('/notes', async (req: Request, res: Response) => {
 })
 
 
+//get single note
+app.get('/note/:noteId', async (req: Request, res: Response) => {
+
+    const noteId = req.params.noteId
+    const note = await Note.findById(noteId)
+    // const note = await Note.findOne({ _id: noteId })
+    // const note = await Note.findOne({ title: "Learning new mongoose" })
+
+    res.status(201).json({
+        success: true,
+        message: "Note get successfully",
+        note
+    })
+})
+
+
 app.get('/', (req: Request, res: Response) => {
     res.send("welcome to note app")
 })
