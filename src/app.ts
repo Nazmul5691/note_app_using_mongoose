@@ -2,13 +2,16 @@ import express, { Application, Request, Response } from 'express'
 import mongoose, { Schema } from 'mongoose';
 
 
+
 const app: Application = express();
+
+app.use(express.json());
 
 const notesSchema = new Schema({
     // title: String,
     // content: String
-    title: { type: String, required: true, trim: true},
-    content: { type: String, default: ''},
+    title: { type: String, required: true, trim: true },
+    content: { type: String, default: '' },
     category: {
         type: String,
         enum: ["personal", "work", "study", "other"],
@@ -17,25 +20,60 @@ const notesSchema = new Schema({
     pinned: {
         type: Boolean,
         default: false
+    },
+    tags: {
+        label: { type: String, required: true },
+        color: { type: String, default: "gray" }
     }
 })
 
 const Note = mongoose.model("Note", notesSchema);
 
-app.post('/create-note', async (req: Request, res: Response) => {
-    const myNote = new Note({
-        title: 'Learning Mongoose',
-        
-    })
 
-    await myNote.save()
+// approach 1 for creating a data
+// app.post('/notes/create-note', async (req: Request, res: Response) => {
+//     const myNote = new Note({
+//         title: 'Learning Mongoose',
+
+//     })
+
+//     await myNote.save()
+
+//     res.status(201).json({
+//         success: true,
+//         message: "Note created successfully",
+//         note: myNote
+//     })
+// })
+
+
+// approach 2 for creating a data
+app.post('/notes/create-note', async (req: Request, res: Response) => {
+
+    const body = req.body;
+
+    const note = await Note.create(body)
 
     res.status(201).json({
         success: true,
         message: "Note created successfully",
-        note: myNote
+        note
     })
 })
+
+
+//get all notes
+app.get('/notes', async (req: Request, res: Response) => {
+
+    const notes = await Note.find()
+
+    res.status(201).json({
+        success: true,
+        message: "Note get successfully",
+        notes
+    })
+})
+
 
 app.get('/', (req: Request, res: Response) => {
     res.send("welcome to note app")
