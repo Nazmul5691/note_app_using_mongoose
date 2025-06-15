@@ -1,12 +1,19 @@
 import mongoose, { Schema } from "mongoose";
-import { Notes } from "../interfaces/notes.interface";
+import { INotes } from "../interfaces/notes.interface";
 
-const notesSchema = new Schema<Notes>(
+const notesSchema = new Schema<INotes>(
     {
         // title: String,
         // content: String
-        title: { type: String, required: true, trim: true },
-        content: { type: String, default: '' },
+        title: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        content: {
+            type: String,
+            default: ''
+        },
         category: {
             type: String,
             enum: ["personal", "work", "study", "other"],
@@ -25,7 +32,7 @@ const notesSchema = new Schema<Notes>(
         versionKey: false,
         timestamps: true
     }
-    
+
 )
 
-export const Note = mongoose.model("Note", notesSchema);
+export const Note = mongoose.model<INotes>("Note", notesSchema);
