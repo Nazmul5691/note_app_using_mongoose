@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
+import { Notes } from "../interfaces/notes.interface";
 
-const notesSchema = new Schema(
+const notesSchema = new Schema<Notes>(
     {
         // title: String,
         // content: String
