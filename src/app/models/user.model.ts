@@ -1,5 +1,6 @@
 import { model, Schema } from "mongoose";
 import { IUser } from "../interfaces/user.interface";
+import validator from 'validator'
 
 
 const userSchema = new Schema<IUser>({
@@ -33,12 +34,13 @@ const userSchema = new Schema<IUser>({
         required: true,
         lowercase: true,
         trim: true,
-        validate: {
-            validator: function (v) {
-                return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(v)
-            },
-            message: props => `Email ${props.value} is not valid`
-        }
+        // validate: {
+        //     validator: function (v) {
+        //         return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(v)
+        //     },
+        //     message: props => `Email ${props.value} is not valid`
+        // }
+        validate: [validator.isEmail, 'Invalid Email {VALUE}']
     },
     password: {
         type: String,
