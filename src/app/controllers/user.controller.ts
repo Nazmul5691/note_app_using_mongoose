@@ -15,6 +15,33 @@ const CreateUserZodSchema = z.object({
 })
 
 
+// userRoutes.post('/create-user', async (req: Request, res: Response) => {
+//     try {
+
+//         const body = req.body;
+//         // const body = await CreateUserZodSchema.parseAsync(req.body)
+
+//         // console.log(body, 'zod body');
+//         const user = await User.create(body);
+
+//         res.status(201).json({
+//             success: true,
+//             message: 'user created successfully',
+//             // user: {}
+//             user
+//         })
+//     } catch (error: any) {
+//         // console.log(error);
+//         res.status(400).json({
+//             success: false,
+//             message: error.message,
+//             error
+//         })
+//     }
+// })
+
+
+// built in method
 userRoutes.post('/create-user', async (req: Request, res: Response) => {
     try {
 
@@ -22,7 +49,11 @@ userRoutes.post('/create-user', async (req: Request, res: Response) => {
         // const body = await CreateUserZodSchema.parseAsync(req.body)
 
         // console.log(body, 'zod body');
-        const user = await User.create(body);
+        // const user = await User.create(body);
+
+        const user = new User(body)
+
+        await user.save()
 
         res.status(201).json({
             success: true,
@@ -39,6 +70,7 @@ userRoutes.post('/create-user', async (req: Request, res: Response) => {
         })
     }
 })
+
 
 
 // userRoutes.post('/create-user', async (req: Request, res: Response) =>{
