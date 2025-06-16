@@ -5,7 +5,8 @@ import { IUser } from "../interfaces/user.interface";
 const userSchema = new Schema<IUser>({
     firstName: {
         type: String,
-        required: true,
+        // required: true,
+        required: [true, 'first name kno dew nai'],
         trim: true,
         // minlength: [6, 'First name must be at least 6 character, got {VALUE}'],
         minlength: 6,
@@ -25,21 +26,32 @@ const userSchema = new Schema<IUser>({
         min: [18, 'age must be at least 18, got {VALUE}'],
         max: 60
     },
-    email:{
+    email: {
         type: String,
-        unique: true,
+        // unique: true,
+        unique: [true, 'email common hoye geche'],
         required: true,
         lowercase: true,
         trim: true,
+        validate: {
+            validator: function (v) {
+                return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(v)
+            },
+            message: props => `Email ${props.value} is not valid`
+        }
     },
     password: {
         type: String,
         required: true
     },
-    role:{
+    role: {
         type: String,
         uppercase: true,
-        enum: ['USER', 'ADMIN', 'SUPERADMIN'],
+        // enum : ['USER', 'ADMIN', 'SUPERADMIN'],
+        enum: {
+            values: ['USER', 'ADMIN', 'SUPERADMIN'],
+            message: "Role is not valid. got {VALUE} role"
+        },
         default: 'USER'
     }
 })
