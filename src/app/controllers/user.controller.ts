@@ -16,6 +16,7 @@ const CreateUserZodSchema = z.object({
 })
 
 
+// normal post2
 // userRoutes.post('/create-user', async (req: Request, res: Response) => {
 //     try {
 
@@ -67,6 +68,8 @@ userRoutes.post('/create-user', async (req: Request, res: Response) => {
             // user: {}
             user
         })
+
+        
     } catch (error: any) {
         // console.log(error);
         res.status(400).json({
@@ -78,7 +81,7 @@ userRoutes.post('/create-user', async (req: Request, res: Response) => {
 })
 
 
-
+// normal post1
 // userRoutes.post('/create-user', async (req: Request, res: Response) =>{
 //     const body = req.body;
 //     const user = await User.create(body);
