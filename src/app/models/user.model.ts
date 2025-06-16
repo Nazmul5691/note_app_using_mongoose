@@ -72,6 +72,7 @@ const userSchema = new Schema<IUser>(
         //     street: String,
         //     zip: Number
         // },
+        
         address: {
             type: addressSchema
         }
