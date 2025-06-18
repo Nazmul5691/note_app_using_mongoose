@@ -100,5 +100,22 @@ userSchema.static("hashPassword", async function(plainPassword: string){
 })
 
 
+// pre save hook create method, document middleware
+userSchema.pre("save", async function(){
+    console.log('inside pre save hook');
+    this.password = await bcrypt.hash(this.password, 10)
+    console.log(this);
+})
+
+// post save hook create method , document middleware
+userSchema.post("save", async function(doc){
+    // console.log('inside post save hook');
+    // console.log('%s has been saved', doc._id);
+    console.log(`${doc._id} has been saved`);
+    
+})
+
+
 // export const User = model<IUser>('User', userSchema)
-export const User = model<IUser, UserStaticMethod>("User", userSchema)
+// export const User = model<IUser, Model<IUser, {}, UserInstanceMethods> >("User", userSchema)     // //when use instance method
+export const User = model<IUser, UserStaticMethod>("User", userSchema)     //when use static method
