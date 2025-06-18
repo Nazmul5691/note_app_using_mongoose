@@ -58,10 +58,20 @@ userRoutes.post('/create-user', async (req: Request, res: Response) => {
         // const user = await User.create(body);
 
 
-        const user = new User(body);
-        const password = await user.hashPassword(body.password);
-        user.password = password;
-        await user.save();
+
+        // built in and custom instance method
+        // const user = new User(body);
+        // const password = await User.hashPassword(body.password);
+        // user.password = password;
+        // await user.save();
+
+
+        // built in and custom static method
+        const password = await User.hashPassword(body.password)
+        console.log(password, 'static');
+        body.password = password
+        const user = await User.create(body);
+
 
         res.status(201).json({
             success: true,
