@@ -129,8 +129,52 @@ userRoutes.post('/create-user', async (req: Request, res: Response) => {
 })
 
 // get user
+// userRoutes.get('/', async (req: Request, res: Response) => {
+//     const users = await User.find();
+
+//     res.status(201).json({
+//         success: true,
+//         message: 'users get successfully',
+//         users
+//     })
+// })
+
+
+
+// get user by filter-sort-skip-limit
 userRoutes.get('/', async (req: Request, res: Response) => {
-    const users = await User.find();
+    // const users = await User.find();
+    // const userEmail = req.query.email
+    const userEmail = req.query.email ? req.query.email : ''
+    // const users = await User.find({email: userEmail});
+
+    let users = []
+
+    // filtering
+    // if(userEmail){
+    //     users = await User.find({email: userEmail});
+    // }
+    // else{
+    //     users = await User.find();
+    // }
+
+
+
+    // sorting
+    // users = await User.find().sort({"email": "asc"})
+    // users = await User.find().sort({ "email": "ascending" })
+    //  users = await User.find().sort({ "email": "desc" })
+    // users = await User.find().sort({ "email": "descending" })
+    // users = await User.find().sort({ "email": 1 })       //ascending
+    // users = await User.find().sort({ "email": -1 })       //descending
+
+
+    // skipping
+    // users = await User.find().skip(7)      //skip from start
+
+    // limiting
+    users = await User.find().limit(2)        //limit from last
+
 
     res.status(201).json({
         success: true,
@@ -138,6 +182,10 @@ userRoutes.get('/', async (req: Request, res: Response) => {
         users
     })
 })
+
+
+
+
 
 // update user
 userRoutes.patch('/:userId', async (req: Request, res: Response) => {

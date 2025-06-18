@@ -122,7 +122,7 @@ userSchema.post("save", async function (doc, next) {
 
 // pre hook find method , query middleware
 userSchema.pre("find", function (next) {
-    console.log('pre hooks');
+    // console.log('pre hooks');
     next()
 })
 
