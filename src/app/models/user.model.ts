@@ -1,7 +1,8 @@
-import  { Model, model, Schema } from "mongoose";
+import { Model, model, Schema } from "mongoose";
 import { IAddress, IUser, UserInstanceMethods, UserStaticMethod } from "../interfaces/user.interface";
 import validator from 'validator';
 import bcrypt from "bcryptjs"
+import { Note } from "./notes.model";
 
 const addressSchema = new Schema<IAddress>(
     {
@@ -74,7 +75,7 @@ const userSchema = new Schema<IUser, UserStaticMethod, UserInstanceMethods>(
         //     street: String,
         //     zip: Number
         // },
-        
+
         address: {
             type: addressSchema
         }
@@ -85,7 +86,7 @@ const userSchema = new Schema<IUser, UserStaticMethod, UserInstanceMethods>(
     }
 )
 
-userSchema.method("hashPassword", async function(plainPassword: string){
+userSchema.method("hashPassword", async function (plainPassword: string) {
     const password = await bcrypt.hash(plainPassword, 10);
     // console.log(password);
     // this.password = password
@@ -93,7 +94,7 @@ userSchema.method("hashPassword", async function(plainPassword: string){
     return password
 })
 
-userSchema.static("hashPassword", async function(plainPassword: string){
+userSchema.static("hashPassword", async function (plainPassword: string) {
     const password = await bcrypt.hash(plainPassword, 10);
     // console.log(password);
     return password
@@ -101,18 +102,35 @@ userSchema.static("hashPassword", async function(plainPassword: string){
 
 
 // pre save hook create method, document middleware
-userSchema.pre("save", async function(){
+userSchema.pre("save", async function (next) {
     console.log('inside pre save hook');
     this.password = await bcrypt.hash(this.password, 10)
     console.log(this);
+    next()
 })
 
 // post save hook create method , document middleware
-userSchema.post("save", async function(doc){
+userSchema.post("save", async function (doc, next) {
     // console.log('inside post save hook');
     // console.log('%s has been saved', doc._id);
     console.log(`${doc._id} has been saved`);
-    
+    next()
+})
+
+
+// pre hook find method , query middleware
+userSchema.pre("find", function( next){
+    console.log('pre hooks');
+    next()
+})
+
+// post hook find method , query middleware
+userSchema.post("findOneAndDelete", async function (doc, next) {
+    if (doc) {
+        // console.log(doc);
+        await Note.deleteMany({ user: doc._id })
+    }
+    next()
 })
 
 

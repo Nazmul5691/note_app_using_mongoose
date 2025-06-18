@@ -128,7 +128,7 @@ userRoutes.post('/create-user', async (req: Request, res: Response) => {
     }
 })
 
-
+// get user
 userRoutes.get('/', async (req: Request, res: Response) => {
     const users = await User.find();
 
@@ -139,7 +139,7 @@ userRoutes.get('/', async (req: Request, res: Response) => {
     })
 })
 
-
+// update user
 userRoutes.patch('/:userId', async (req: Request, res: Response) => {
     const userId = req.params.userId;
     const updatedBody = req.body;
@@ -152,10 +152,11 @@ userRoutes.patch('/:userId', async (req: Request, res: Response) => {
     })
 })
 
-
+// delete user
 userRoutes.delete('/:userId', async (req: Request, res: Response) => {
     const userId = req.params.userId
-    const deletedUser = await User.findByIdAndDelete(userId)
+    // const deletedUser = await User.findByIdAndDelete(userId)
+    const deletedUser = await User.findOneAndDelete({ _id: userId })
 
     res.status(201).json({
         success: true,
